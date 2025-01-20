@@ -9,17 +9,17 @@ import { AxisType } from '@/types/axis'
 const views = [
   {
     id: 'monthly',
-    label: 'Monthly View',
+    label: 'Monthly',
     list_name: 'months',
   },
   {
     id: 'member',
-    label: 'Member View',
+    label: 'Member',
     list_name: 'members',
   },
   {
     id: 'project',
-    label: 'Project View',
+    label: 'Project',
     list_name: 'projects',
   },
 ]
