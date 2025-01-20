@@ -133,7 +133,7 @@ export function ResourcePlanningPresentation({
   return (
     <>
       <main className="w-[1000px] mx-auto p-10">
-        <header className="flex items-center gap-4 mb-5">
+        <header className="flex justify-center items-center gap-4 mb-10">
           <Select value={currentView} onValueChange={setCurrentView}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select View" />
