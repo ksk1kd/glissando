@@ -32,6 +32,10 @@ export default function Page() {
   const [columns, setColumns] = useState(members)
   const [rows, setRows] = useState(projects)
   const [resources, setResources] = useState(Array.from({ length: rows.length }, () => Array(columns.length).fill(0)))
+  const [columnSums, setColumnSums] = useState(
+    columns.map((_, colIndex) => resources.reduce((sum, row) => sum + row[colIndex], 0)),
+  )
+  const [rowSums, setRowSums] = useState(resources.map((row) => row.reduce((sum, value) => sum + value, 0)))
 
   useEffect(() => {
     const selectedView = views.find((view) => view.id === currentView)
@@ -56,9 +60,20 @@ export default function Page() {
       }
       setRows(newRows)
       setColumns(newColumns)
-      setResources(Array.from({ length: newRows.length }, () => Array(newColumns.length).fill(0)))
+      const newResources = Array.from({ length: newRows.length }, () => Array(newColumns.length).fill(0))
+      setResources(newResources)
+      setColumnSums(newColumns.map((_, colIndex) => newResources.reduce((sum, row) => sum + row[colIndex], 0)))
+      setRowSums(newResources.map((row) => row.reduce((sum, value) => sum + value, 0)))
     }
   }, [currentView])
+
+  const handleInputChange = (rowIndex: number, colIndex: number, value: number) => {
+    const newResources = [...resources]
+    newResources[rowIndex][colIndex] = value || 0
+    setResources(newResources)
+    setColumnSums(columns.map((_, colIndex) => newResources.reduce((sum, row) => sum + row[colIndex], 0)))
+    setRowSums(newResources.map((row) => row.reduce((sum, value) => sum + value, 0)))
+  }
 
   return (
     <>
@@ -94,10 +109,11 @@ export default function Page() {
             <tr>
               <th></th>
               {columns.map((column, index) => (
-                <th key={index} className="p-1">
+                <th key={index} className="p-1 w-20">
                   {column}
                 </th>
               ))}
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
@@ -106,11 +122,26 @@ export default function Page() {
                 <th className="p-1 w-40">{row}</th>
                 {resources[rowIndex].map((value, colIndex) => (
                   <td key={`${rowIndex}-${colIndex}`} className="p-1">
-                    <Input className="text-right" type="number" placeholder={value} />
+                    <Input
+                      className="text-right"
+                      type="number"
+                      value={value}
+                      onChange={(e) => handleInputChange(rowIndex, colIndex, parseInt(e.target.value))}
+                    />
                   </td>
                 ))}
+                <td className="p-1 text-right">{rowSums[rowIndex]}</td>
               </tr>
             ))}
+            <tr>
+              <th className="p-1 w-40">Total</th>
+              {columnSums.map((sum, index) => (
+                <td key={index} className="py-1 px-3 text-right">
+                  {sum}
+                </td>
+              ))}
+              <td className="p-1 text-right"></td>
+            </tr>
           </tbody>
         </table>
       </main>
