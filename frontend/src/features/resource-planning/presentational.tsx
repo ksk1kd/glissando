@@ -182,6 +182,7 @@ export function ResourcePlanningPresentation({
                       type="number"
                       value={value}
                       onChange={(e) => handleInputChange(rowIndex, colIndex, parseInt(e.target.value))}
+                      onFocus={(e) => e.target.select()}
                     />
                   </td>
                 ))}
