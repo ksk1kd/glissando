@@ -13,4 +13,5 @@ func SetRouting(e *echo.Echo) {
 	g.GET("/items", handler.GetItemList)
 	g.GET("/members", handler.GetMemberList)
 	g.GET("/projects", handler.GetProjectList)
+	g.GET("/resources", handler.GetResourceList)
 }
