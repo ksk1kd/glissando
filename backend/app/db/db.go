@@ -45,16 +45,16 @@ func Init(seeding bool) {
 
 	if seeding {
 		db.Migrator().DropTable(
-			&models.User{},
-			&models.Category{},
-			&models.Item{},
+			&models.Member{},
+			&models.Project{},
+			&models.Resource{},
 		)
 	}
 
 	db.AutoMigrate(
-		&models.User{},
-		&models.Category{},
-		&models.Item{},
+		&models.Member{},
+		&models.Project{},
+		&models.Resource{},
 	)
 
 	if seeding {
