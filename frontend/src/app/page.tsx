@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default async function Page() {
@@ -13,6 +14,7 @@ export default async function Page() {
           <SelectItem value="system">System</SelectItem>
         </SelectContent>
       </Select>
+      <Input />
     </>
   )
 }
