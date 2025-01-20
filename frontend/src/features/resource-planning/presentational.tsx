@@ -126,24 +126,24 @@ export function ResourcePlanningPresentation({
           <tbody>
             {rows.map((row, rowIndex) => (
               <tr key={row.id}>
-                <th className="p-1 w-40">{row.name}</th>
+                <th className="p-1 w-40 text-right">{row.name}</th>
                 {resources[rowIndex].map((value, colIndex) => (
                   <td key={`${rowIndex}-${colIndex}`} className="p-1">
                     <Input
-                      className="text-right"
+                      className={`text-center ${value !== 0 ? 'bg-fuchsia-950' : ''}`}
                       type="number"
                       value={value}
                       onChange={(e) => handleInputChange(rowIndex, colIndex, parseInt(e.target.value))}
                     />
                   </td>
                 ))}
-                <td className="p-1 text-right">{rowSums[rowIndex]}</td>
+                <td className="py-1 px-6 text-center bg-violet-950">{rowSums[rowIndex]}</td>
               </tr>
             ))}
             <tr>
-              <th className="p-1 w-40">Total</th>
+              <th className="p-1 w-40 text-right">Total</th>
               {columnSums.map((sum, index) => (
-                <td key={index} className="py-1 px-3 text-right">
+                <td key={index} className="py-2 px-3 text-center bg-violet-950">
                   {sum}
                 </td>
               ))}
