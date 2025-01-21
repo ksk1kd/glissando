@@ -21,3 +21,17 @@ func GetResourceList(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, resources)
 }
+
+func UpdateResource(c echo.Context) error {
+
+	member := c.FormValue("member")
+	project := c.FormValue("project")
+	month := c.FormValue("month")
+	time := c.FormValue("time")
+	err := store.UpdateResourceTime(member, project, month, time)
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
