@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { API_RESOURCE_LIST_GET } from '@/constants/api'
+import { API_RESOURCE_LIST_GET, API_RESOURCE_UPDATE } from '@/constants/api'
 import { AxisType } from '@/types/axis'
 import { buildPublicApiUrl } from '@/utils/buildApiUrl'
 
@@ -122,12 +122,42 @@ export function ResourcePlanningPresentation({
     })()
   }, [currentDisplay, rows, columns, updateResources])
 
-  const handleInputChange = (rowIndex: number, colIndex: number, value: number) => {
+  const handleInputChange = async (rowIndex: number, colIndex: number, value: number, rowId: string, colId: string) => {
     const newResources = [...resources]
     newResources[rowIndex][colIndex] = value || 0
     setResources(newResources)
     setColumnSums(columns.map((_, colIndex) => newResources.reduce((sum, row) => sum + row[colIndex], 0)))
     setRowSums(newResources.map((row) => row.reduce((sum, value) => sum + value, 0)))
+    const formData = new FormData()
+    switch (currentView) {
+      case 'monthly':
+        formData.append('member', colId)
+        formData.append('project', rowId)
+        formData.append('month', currentDisplay)
+        formData.append('time', value.toString())
+        break
+      case 'member':
+        formData.append('member', currentDisplay)
+        formData.append('project', rowId)
+        formData.append('month', colId)
+        formData.append('time', value.toString())
+        break
+      case 'project':
+        formData.append('member', rowId)
+        formData.append('project', currentDisplay)
+        formData.append('month', colId)
+        formData.append('time', value.toString())
+        break
+    }
+    await fetch(
+      buildPublicApiUrl({
+        path: API_RESOURCE_UPDATE ?? '',
+      }),
+      {
+        method: 'PUT',
+        body: formData,
+      },
+    )
   }
 
   return (
@@ -181,7 +211,9 @@ export function ResourcePlanningPresentation({
                       className={`text-center ${value !== 0 ? 'bg-fuchsia-950' : ''}`}
                       type="number"
                       value={value}
-                      onChange={(e) => handleInputChange(rowIndex, colIndex, parseInt(e.target.value))}
+                      onChange={(e) =>
+                        handleInputChange(rowIndex, colIndex, parseInt(e.target.value), row.id, columns[colIndex].id)
+                      }
                       onFocus={(e) => e.target.select()}
                     />
                   </td>
