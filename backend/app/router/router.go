@@ -10,7 +10,6 @@ func SetRouting(e *echo.Echo) {
 	version := "v1"
 	prefix := "/api/" + version
 	g := e.Group(prefix)
-	g.GET("/items", handler.GetItemList)
 	g.GET("/members", handler.GetMemberList)
 	g.GET("/projects", handler.GetProjectList)
 	g.GET("/resources", handler.GetResourceList)
