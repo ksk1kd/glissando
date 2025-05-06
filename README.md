@@ -10,6 +10,8 @@
 
 This is a prototype of an application for managing a company's human resources.
 
+![App Screenshot](./assets/app-screenshot.png)
+
 ## Development Setup
 
 ### Create `.env` file for Backend
